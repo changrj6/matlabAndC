@@ -25,18 +25,6 @@ typedef Mat (*MatFunType)(Mat frameprev, Mat framecurr, Mat flow);
 //封装 PyrLK
 typedef int (*ImgFeatureFunType)(IplImage* imgprev, IplImage* imgcurr,CvPoint2D32f* cornersprev,CvPoint2D32f* cornerscurr);
 
-//(此方法可以忽略，可用imgStrategic方法当strategic = 1代替)
-int imgBalance(ImgFunType funtype,IplImage* imgprev, IplImage* imgcurr, IplImage* imgdst);
-
-//(此方法可以忽略，可用imgStrategic方法当strategic = 4代替)
-void imgMotionToColor(ImgFunType funtype,IplImage* imgprev, IplImage* imgcurr, Mat &color);
-
-//(此方法可以忽略，可用matStrategic方法当strategic = 1代替)
-int matBalance(MatFunType funtype, Mat frameprev, Mat framecurr, Mat framedst, bool issf = false);
-
-//(此方法可以忽略，可用matStrategic方法当strategic = 4代替)
-void matMotionToColor(MatFunType funtype, Mat frameprev, Mat framecurr, Mat &color, bool issf = false);
-
 /*
 *  Method:     imgFeatureBalance
 *  Description: 计算光流，利用光流进行导�?

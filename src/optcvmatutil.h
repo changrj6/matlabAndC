@@ -34,7 +34,7 @@ float ttcForDenseCvMat(CvMat* vely, int foeY, float *ttc);
 *  int py: Required = false. 上下光流的分界线.
 *  float edge: Required = false. 忽略上下左右edge倍的边界. 0.1429��Ϊ1/7
 */
-float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst, float k, float threshold = THRESHOLD, int px = WIDTH/2, int py = HEIGHT/2, float edge = EDGE);
+float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst, float k, int px = WIDTH/2, int py = HEIGHT/2, float edge = EDGE);
 
 /*
 *  Method:     drawFlowForDenseCvMat

@@ -39,7 +39,6 @@ float Lucaskanade(IplImage* imgprev, IplImage* imgcurr, CvMat* velx, CvMat* vely
 //HSÀ„∑®
 float HornSchunck(IplImage* imgprev, IplImage* imgcurr, CvMat* velx, CvMat* vely){
 	CvTermCriteria criteria = cvTermCriteria (CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 20, 0.1);
-
 	float start = (float)getTickCount();
 	cvCalcOpticalFlowHS (imgprev, imgcurr, 0, velx, vely, 100.0, criteria);
 	printf("cvCalcOpticalFlowHS : %lf sec\n", (getTickCount() - start) / getTickFrequency());

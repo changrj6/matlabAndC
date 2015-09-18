@@ -39,7 +39,6 @@ DEF Wall2 Transform {
   }
 }
 DEF View1 Viewpoint {
-  description ""
   position 0 0 4
   orientation 0 1 0 0
   fieldOfView 1.05

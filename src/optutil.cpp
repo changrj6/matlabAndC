@@ -86,8 +86,8 @@ void drawMatFlow(CvPoint p, CvPoint q, Mat framedst){
 	p.y = (int) (q.y + 2 * hypotenuse * sin(angle - CV_PI / 4));
 	line(framedst, p, q, CV_RGB(0,0,255),1 );
 }
-float balanceControlLR(IplImage* imgdst, int leftSumFlow, int rightSumFlow, float k, float threshold){
-    if(false){ //如果需要停止，返回-2
+float balanceControlLR(IplImage* imgdst, CvMat* velx, int leftSumFlow, int rightSumFlow, float k){
+    if(isBigObstacle(imgdst, velx)){ //前方遇到同一色巨型障碍物，返回-2
         return -2*INT_FLOAT;
     }
     if(leftSumFlow == 0 || rightSumFlow == 0){
@@ -101,20 +101,72 @@ float balanceControlLR(IplImage* imgdst, int leftSumFlow, int rightSumFlow, floa
         return turnLRScale(leftSumFlow, rightSumFlow, k);
     }
 }
+bool isBigObstacle(IplImage* imgdst, CvMat* velx){
+   uchar *data = (uchar*)imgdst->imageData;
+	int step = imgdst->widthStep / sizeof(uchar);
+	int channels = imgdst->nChannels;
+	int sumR = 0, sumG = 0, sumB = 0;
+	int count = 0;
+	for(int i = EDGE_OBS*HEIGHT; i < (1-EDGE_OBS)*HEIGHT; i++){
+		for(int j = EDGE_OBS*WIDTH; j < (1-EDGE_OBS)*WIDTH; j++ ){
+			sumB += (int)data[i*step+j*channels+0];
+			sumG += (int)data[i*step+j*channels+1];
+			sumR += (int)data[i*step+j*channels+2];
+			count ++ ;
+		}
+	}
+	int avgB = sumB / count;
+	int avgG = sumG / count;
+	int avgR = sumR / count;
+	int timers;
+	int timerCount = 0;
+	int flowZeroCount = 0;
+	for(int i = EDGE_OBS*HEIGHT; i < (1-EDGE_OBS)*HEIGHT; i++){
+		for(int j = EDGE_OBS*WIDTH; j < (1-EDGE_OBS)*WIDTH; j++ ){
+			timers = 0;
+			if(abs((int)data[i*step+j*channels+0] - avgB) < COLOR_SCALE){
+				timers += 1;
+			}
+			if(abs((int)data[i*step+j*channels+1] - avgG) < COLOR_SCALE){
+				timers += 1;
+			}
+			if(abs((int)data[i*step+j*channels+2] - avgR) < COLOR_SCALE){
+				timers += 1;
+			}
+			if (timers == 3)
+			{
+				timerCount ++;
+				if (((int) cvGetReal2D(velx, i, j)) == 0)
+				{
+					flowZeroCount ++;
+				}
+			}
+		}
+	}
+	float timerPro = (timerCount*1.0)/count;
+	float flowZeroPro = (flowZeroCount*1.0)/timerCount;
+	if (timerPro > THRESHOLD_TIMER && flowZeroPro > THRESHOLD_ZERO)
+	{
+		return true;
+	}else{
+		return false;
+	}
+}
 float turnLRScale(float leftSumFlow, float rightSumFlow, float k){
-    if((leftSumFlow == 0 && rightSumFlow == 0) || (leftSumFlow == rightSumFlow)){
+    if(leftSumFlow == rightSumFlow){
         return 0;
     }else{
         if(K_FLAG){
             k = 1;
         }
         if(leftSumFlow > rightSumFlow){
-            return ((k*rightSumFlow - leftSumFlow)*INT_FLOAT)/(leftSumFlow + rightSumFlow);
+            return ((leftSumFlow - k*rightSumFlow)*INT_FLOAT)/(leftSumFlow + rightSumFlow);
         }else{
-            return ((rightSumFlow - k*leftSumFlow)*INT_FLOAT)/(leftSumFlow + rightSumFlow);
+            return ((k*leftSumFlow - rightSumFlow)*INT_FLOAT)/(leftSumFlow + rightSumFlow);
         }
     }
 }
+
 
 
 

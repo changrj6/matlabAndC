@@ -29,8 +29,11 @@
 #define LK_K 6
 #define HS_K 4.3
 #define BM_K 1.4
-#define THRESHOLD 0.75  //同色所占比例大于整幅图像的75%，则认为是墙，停止。
 #define INT_FLOAT 100.0 //matlab中int向上float转型有问题，所以结果乘100，处理时再除100.
-#define K_FLAG false  //在避撞偏移量中，false表示k取1，而非上述*_K变量
-#define EDGE 0.1429
+#define K_FLAG true  //在避撞偏移量中，false表示k取1，而非上述*_K变量
+#define EDGE 0 //0.1429
+#define EDGE_OBS 0.33
+#define COLOR_SCALE 20
+#define THRESHOLD_TIMER 0.75 //同色所占比例大于整幅图像的75%，则认为是墙，停止。
+#define THRESHOLD_ZERO 0.8
 

@@ -39,7 +39,9 @@ void drawFlow(CvPoint p, CvPoint q, IplImage* imgdst);
 */
 void drawMatFlow(CvPoint p, CvPoint q, Mat framedst);
 
-float balanceControlLR(IplImage* imgdst, int leftSumFlow, int rightSumFlow, float k, float threshold);
+float balanceControlLR(IplImage* imgdst, CvMat* velx, int leftSumFlow, int rightSumFlow, float k);
+
+bool isBigObstacle(IplImage* imgdst, CvMat* velx);
 
 float turnLRScale(float leftSumFlow, float rightSumFlow, float k);
 #endif /* util_FOE_TTC_ */

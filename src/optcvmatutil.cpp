@@ -125,7 +125,7 @@ float ttcForDenseCvMat(CvMat* vely, int foeY, float *ttc){
 }
 
 //利用左右光流平衡返回左1右2前3停止4
-float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst,  float k, float threshold, int px, int py, float edge){
+float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst,  float k, int px, int py, float edge){
 	Vec2i leftSumFlow = Vec2i(0, 0);
     int leftcount  = 0;
     int rightcount  = 0;
@@ -153,9 +153,9 @@ float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst,  float k,
 	rightSumFlow[0] = abs(rightSumFlow[0] / (WIDTH - px));
 	rightSumFlow[1] = abs(rightSumFlow[1] / (WIDTH - px));
 
-    float result  = balanceControlLR(imgdst, leftSumFlow[0], rightSumFlow[0], k, threshold);
+    float result  = balanceControlLR(imgdst, velx, leftSumFlow[0], rightSumFlow[0], k);
     
-    Vec2i diffFlow = Vec2i(rightSumFlow[0] - leftSumFlow[0], rightSumFlow[1] - leftSumFlow[1]);
+    Vec2i diffFlow = Vec2i(leftSumFlow[0] - rightSumFlow[0], rightSumFlow[1] - leftSumFlow[1]);
 	//printf("diffFlow: %d , %d \n", diffFlow[0], diffFlow[1]);
 	//printf("left :%d  right:%d\n", leftSumFlow[0], rightSumFlow[0]);
 	cvLine(imgdst, cvPoint(px, py), cvPoint(px+diffFlow[0], py), CV_RGB (0, 255, 0), 3, CV_AA, 0);

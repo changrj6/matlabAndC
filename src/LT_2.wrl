@@ -1,0 +1,254 @@
+#VRML V2.0 utf8
+
+WorldInfo {
+  title "VR Car with obstacles"
+  info [
+    "Copyright 2009 Alexander Grau" 
+    "$Revision: 1.0 $" 
+    "$Date: 2009/01/15 14:10:00 $" 
+    "$Author: alexandergrau $" 
+  ]
+}
+NavigationInfo {
+  type "EXAMINE" 
+}
+DirectionalLight {
+  direction 0.9 -0.3 -0.35
+  color 1 0.8 0.7
+}
+Background {
+  skyColor [
+    0 0 1,
+    0.4 0.6 1,
+    1 1 1 
+  ]
+  skyAngle [1.39626, 1.51844]
+  groundColor [
+    0 0 0,
+    0 0.50196 0 
+  ]
+  groundAngle 1.5708
+}
+DEF OutWall Group {
+  children [
+    Transform {
+      translation 0 0 40
+      children DEF Wall1 Group {
+        children Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.6 0.6 0.6
+            }
+          }
+          geometry Box {
+            size 20 4 0.1
+          }
+        }
+      }
+    }
+    Transform {
+      translation -10 0 20
+      scale 2 1 1
+      rotation 0 1 0 1.57
+      children USE Wall1
+    }
+    Transform {
+      translation 10 0 12
+      scale 1.2 1 1
+      rotation 0 1 0 1.57
+      children USE Wall1
+    }
+    Group {
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.6 0.6 0.6
+          }
+        }
+        geometry Box {
+          size 20 4 0.1
+        }
+      }
+    }
+  ]
+}
+DEF floor Transform {
+  translation 0 0 20
+  children Shape {
+    appearance Appearance {
+      # rotation 0.95 
+      textureTransform NULL
+      material Material {
+        diffuseColor 0 1 0
+      }
+    }
+    geometry Box {
+      size 80 0.01 80
+    }
+  }
+}
+DEF Obs Group {
+  children [
+    Transform {
+      translation 0 0 30
+      children DEF Box1 Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 1 0
+          }
+        }
+        geometry Box {
+        }
+      }
+    }
+    Transform {
+      translation 0 0 35
+      children USE Box1
+    }
+    Transform {
+      translation -5 0 37
+      children USE Box1
+    }
+    Transform {
+      translation 5 0 37
+      children USE Box1
+    }
+    Transform {
+      translation 5 0 32.5
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 1 0
+          }
+        }
+        geometry Box {
+        }
+      }
+    }
+    Transform {
+      translation 7.5 0 23
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 1 1 0
+          }
+        }
+        geometry Box {
+        }
+      }
+    }
+  ]
+}
+DEF InWall Group {
+  children [
+    Transform {
+      translation 0 0 5
+      children DEF Wall2 Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.6 0.6 0.6
+          }
+        }
+        geometry Box {
+          size 10 4 0.1
+        }
+      }
+    }
+    Transform {
+      translation 0 0 10
+      children USE Wall2
+    }
+    Transform {
+      translation 0 0 15
+      children USE Wall2
+    }
+    Transform {
+      translation -5 0 7.5
+      scale 0.5 1 1
+      rotation 0 1 0 1.57
+      children USE Wall2
+    }
+    Transform {
+      translation -5 0 17.5
+      scale 0.5 1 1
+      rotation 0 1 0 1.57
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.6 0.6 0.6
+          }
+        }
+        geometry Box {
+          size 10 4 0.1
+        }
+      }
+    }
+    Transform {
+      translation 0 0 20
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.6 0.6 0.6
+          }
+        }
+        geometry Box {
+          size 10 4 0.1
+        }
+      }
+    }
+    Transform {
+      translation 0 0 25
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.6 0.6 0.6
+          }
+        }
+        geometry Box {
+          size 10 4 0.1
+        }
+      }
+    }
+    Transform {
+      translation -5 0 27.5
+      scale 0.5 1 1
+      rotation 0 1 0 1.57
+      children Shape {
+        appearance Appearance {
+          material Material {
+            diffuseColor 0.6 0.6 0.6
+          }
+        }
+        geometry Box {
+          size 10 4 0.1
+        }
+      }
+    }
+  ]
+}
+DEF Observer Viewpoint {
+  description "View 1 - Observer"
+  position 7.5 1 2.5
+  orientation 0 1 0 1.57
+  fieldOfView 1.4
+}
+Transform {
+  translation 1 0.5 1
+  rotation 0 1 0 0
+  children Viewpoint {
+    description "View 3 - Entry"
+    position 10 1 33
+    orientation -0.05 1 0.05 1.6
+    fieldOfView 1.57079
+  }
+}
+DEF Camera_car Transform {
+  translation 1 0.5 1
+  rotation 0 1 0 0
+  children DEF VPfollow Viewpoint {
+    description "View 2 - Driver"
+    position -8 0 0
+    orientation 0 1 0 1.57
+    fieldOfView 7.85398
+  }
+}
