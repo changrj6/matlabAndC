@@ -10,7 +10,7 @@ function [ result] = movecvmat( funcname, fig, View1, varargin )
     originY = 0.5; %View1.position初始y
     originZ = 2.5; %View1.position初始z
     skip = 2; %View1.position 每次运动步长
-    distance = 700; % View1.position，
+    distance = 500; % View1.position，
     width = 10; % 隧道宽度，用于计算视角的View1.orientation
     ori = 1.57; % 旋转90度
     gap = 10; %LK/HS 左右偏移大小缩减倍数
@@ -32,20 +32,26 @@ function [ result] = movecvmat( funcname, fig, View1, varargin )
     degree = View1.fieldOfView/width;
     for t=0:skip:distance
         if turn == -2 %-2表示停止
-            start = 1;
-            if t/skip - turnSkip >= 0
-                start = t/skip - turnSkip + 1;
-            end
-            turnSum = 0;
-            for i=start:1:(t/skip)
-                turnSum = turnSum + result(i,1);
-            end
-            if turnSum < 0
-                ori = ori + 1.57;
+            [ stop, ori] = turneq2(funcname, fig, View1, strategic, ori, t, skip, result);
+            if stop == 1
+                break;
             else
-                ori = ori - 1.57;
+                View1.orientation = [0 1 0 ori];
             end
-            View1.orientation = [0 1 0 ori];
+%             start = 1;
+%             if t/skip - turnSkip >= 0
+%                 start = t/skip - turnSkip + 1;
+%             end
+%             turnSum = 0;
+%             for i=start:1:(t/skip)
+%                 turnSum = turnSum + result(i,1);
+%             end
+%             if turnSum < 0
+%                 ori = ori + 1.57;
+%             else
+%                 ori = ori - 1.57;
+%             end
+%             View1.orientation = [0 1 0 ori];
         end
         if turn == 0 %0表示直行
             View1.orientation = [0 1 0 ori];
