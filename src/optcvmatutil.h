@@ -34,7 +34,7 @@ float ttcForDenseCvMat(CvMat* vely, int foeY, float *ttc);
 *  int py: Required = false. 上下光流的分界线.
 *  float edge: Required = false. 忽略上下左右edge倍的边界. 0.1429��Ϊ1/7
 */
-float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst, float k, int px = WIDTH/2, int py = HEIGHT/2, float edge = EDGE);
+float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst, float k, int px = WIDTH/2, int py = HEIGHT/2);
 
 /*
 *  Method:     drawFlowForDenseCvMat
@@ -45,5 +45,17 @@ float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst, float k, 
 *  IplImage * imgdst: Required = true. 目的图像�?
 */
 void drawFlowForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst);
+
+/*
+*  Method:     drawFlow
+*  Description: p到q的连线，表示p像素的光流，参数类型为IplImage. 
+*  Returns:    void
+*  CvPoint p:   Required = true. 源点. 
+*  CvPoint q:   Required = true. 目的�? q - p = 光流. 
+*  IplImage * imgdst: Required = true. 在图像帧imgdst画光�?
+*/
+void drawFlow(CvPoint p, CvPoint q, IplImage* imgdst);
+
+bool isBigObstacle(IplImage* imgdst, CvMat* velx);
 
 #endif

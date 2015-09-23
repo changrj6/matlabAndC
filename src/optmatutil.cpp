@@ -15,7 +15,8 @@ float ttcForDenseMat(Mat flow, int foeY, float *ttc){
 	return 0;
 }
 
-int balanceForDenseMat(Mat flow, Mat framedst, int threshold, float k, int px, int py, float edge ){
+float balanceForDenseMat(Mat flow, Mat framedst, float k, int px, int py){
+    
 	return 0;
 }
 
@@ -40,6 +41,24 @@ void drawFlowForDenseMat(Mat flow, Mat framedst){
 			drawMatFlow(p, q, framedst);
 		}
 	}
+}
+
+void drawMatFlow(CvPoint p, CvPoint q, Mat framedst){
+	double angle; 
+	angle = atan2((double) p.y - q.y, (double) p.x - q.x);
+	double hypotenuse; 
+	hypotenuse = sqrt(((p.y - q.y)*(p.y - q.y) +(p.x - q.x)*(p.x - q.x))*1.0);
+
+	q.x = (int) (p.x - 3 * hypotenuse * cos(angle));
+	q.y = (int) (p.y - 3 * hypotenuse * sin(angle));
+	line(framedst, p, q, CV_RGB(0,0,255),1);
+
+	p.x = (int) (q.x + 3 * cos(angle + CV_PI / 4));
+	p.y = (int) (q.y + 3  * sin(angle + CV_PI / 4));
+	line(framedst, p, q,CV_RGB(0,0,255),1 );
+	p.x = (int) (q.x + 3 * cos(angle - CV_PI / 4));
+	p.y = (int) (q.y + 3 * sin(angle - CV_PI / 4));
+	line(framedst, p, q, CV_RGB(0,0,255),1 );
 }
 
 

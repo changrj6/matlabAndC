@@ -91,7 +91,7 @@ float imgStrategic(ImgFunType funtype, IplImage* imgprev, IplImage* imgcurr, Ipl
 	return result;
 }
 
-int matStrategic(MatFunType funtype, Mat frameprev, Mat framecurr, Mat framedst,Mat &color, int strategic,bool issf){
+int matStrategic(MatFunType funtype, Mat frameprev, Mat framecurr, Mat &framedst,Mat &color, int strategic,bool issf){
 	Mat frameprev_1, framecurr_1, flow;
 	if (issf)
 	{
@@ -103,10 +103,14 @@ int matStrategic(MatFunType funtype, Mat frameprev, Mat framecurr, Mat framedst,
 	}
 
 	flow = funtype(frameprev_1, framecurr_1, flow);
-
+    float k = FB_K;
+    if(issf){
+        k = SF_K;
+    }
+    float result = 0;
 	if ((strategic >> 0 & 1) == 1) //balance
 	{
-		
+		result = balanceForDenseMat(flow, framedst, k);
 	}
 	if ((strategic >> 1 & 1) == 1) //draw optflow
 	{

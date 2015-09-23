@@ -125,12 +125,10 @@ float ttcForDenseCvMat(CvMat* vely, int foeY, float *ttc){
 }
 
 //利用左右光流平衡返回左1右2前3停止4
-float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst,  float k, int px, int py, float edge){
+float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst,  float k, int px, int py){
 	Vec2i leftSumFlow = Vec2i(0, 0);
-    int leftcount  = 0;
-    int rightcount  = 0;
-    float up = edge*HEIGHT;
-    float down = (1-edge)*HEIGHT;
+    float up = EDGE*HEIGHT;
+    float down = (1-EDGE)*HEIGHT;
 	for (int i = 0; i < px; i++)
 	{
 		for (int j = up; j < down; j++)
@@ -153,7 +151,8 @@ float balanceForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst,  float k,
 	rightSumFlow[0] = abs(rightSumFlow[0] / (WIDTH - px));
 	rightSumFlow[1] = abs(rightSumFlow[1] / (WIDTH - px));
 
-    float result  = balanceControlLR(imgdst, velx, leftSumFlow[0], rightSumFlow[0], k);
+    bool isBig = isBigObstacle(imgdst, velx);
+    float result  = balanceControlLR(isBig, leftSumFlow[0], rightSumFlow[0], k);
     
     Vec2i diffFlow = Vec2i(leftSumFlow[0] - rightSumFlow[0], rightSumFlow[1] - leftSumFlow[1]);
 	//printf("diffFlow: %d , %d \n", diffFlow[0], diffFlow[1]);
@@ -192,4 +191,73 @@ void drawFlowForDenseCvMat(CvMat* velx, CvMat* vely, IplImage* imgdst){
 		 }
 	 }
 }
+void drawFlow(CvPoint p, CvPoint q, IplImage* imgdst){
+	double angle; 
+	angle = atan2((double) p.y - q.y, (double) p.x - q.x);
+	double hypotenuse; 
+	hypotenuse = sqrt(((p.y - q.y)*(p.y - q.y) +(p.x - q.x)*(p.x - q.x))*1.0);
+	
+	q.x = (int) (p.x - 3 * hypotenuse * cos(angle));
+	q.y = (int) (p.y - 3 * hypotenuse * sin(angle));
+	cvLine(imgdst, p, q, CV_RGB(0,0,255),1);
+
+	p.x = (int) (q.x + 2 * hypotenuse * cos(angle + CV_PI / 4));
+	p.y = (int) (q.y + 2 * hypotenuse * sin(angle + CV_PI / 4));
+	cvLine(imgdst, p, q, CV_RGB(0,0,255),1 );
+	p.x = (int) (q.x + 2 * hypotenuse * cos(angle - CV_PI / 4));
+	p.y = (int) (q.y + 2 * hypotenuse * sin(angle - CV_PI / 4));
+	cvLine(imgdst, p, q, CV_RGB(0,0,255),1 );
+}
+bool isBigObstacle(IplImage* imgdst, CvMat* velx){
+   uchar *data = (uchar*)imgdst->imageData;
+	int step = imgdst->widthStep / sizeof(uchar);
+	int channels = imgdst->nChannels;
+	int sumR = 0, sumG = 0, sumB = 0;
+	int count = 0;
+	for(int i = EDGE_OBS*HEIGHT; i < (1-EDGE_OBS)*HEIGHT; i++){
+		for(int j = EDGE_OBS*WIDTH; j < (1-EDGE_OBS)*WIDTH; j++ ){
+			sumB += (int)data[i*step+j*channels+0];
+			sumG += (int)data[i*step+j*channels+1];
+			sumR += (int)data[i*step+j*channels+2];
+			count ++ ;
+		}
+	}
+	int avgB = sumB / count;
+	int avgG = sumG / count;
+	int avgR = sumR / count;
+	int timers;
+	int timerCount = 0;
+	int flowZeroCount = 0;
+	for(int i = EDGE_OBS*HEIGHT; i < (1-EDGE_OBS)*HEIGHT; i++){
+		for(int j = EDGE_OBS*WIDTH; j < (1-EDGE_OBS)*WIDTH; j++ ){
+			timers = 0;
+			if(abs((int)data[i*step+j*channels+0] - avgB) < COLOR_SCALE){
+				timers += 1;
+			}
+			if(abs((int)data[i*step+j*channels+1] - avgG) < COLOR_SCALE){
+				timers += 1;
+			}
+			if(abs((int)data[i*step+j*channels+2] - avgR) < COLOR_SCALE){
+				timers += 1;
+			}
+			if (timers == 3)
+			{
+				timerCount ++;
+				if (((int) cvGetReal2D(velx, i, j)) == 0)
+				{
+					flowZeroCount ++;
+				}
+			}
+		}
+	}
+	float timerPro = (timerCount*1.0)/count;
+	float flowZeroPro = (flowZeroCount*1.0)/timerCount;
+	if (timerPro > THRESHOLD_TIMER && flowZeroPro > THRESHOLD_ZERO)
+	{
+		return true;
+	}else{
+		return false;
+	}
+}
+
 

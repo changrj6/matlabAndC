@@ -1,0 +1,50 @@
+#VRML V2.0 utf8
+
+Background {
+  skyColor [
+    0 0.2 0.7,
+    0 0.5 1,
+    1 1 1 
+  ]
+  skyAngle [1.309, 1.571]
+  groundColor [
+    0.1 0 0,
+    0.4 0.25 0.2,
+    0.6 0.6 0.6 
+  ]
+  groundAngle [1.309, 1.571]
+}
+DEF obstacles Group {
+  children Transform {
+    translation 4 0 0
+    children DEF obstacle0 Shape {
+      appearance Appearance {
+        texture ImageTexture {
+          url "box1.jpg" 
+        }
+        material Material {
+          diffuseColor 0.8 0.8 0
+        }
+      }
+      geometry Box {
+        size 1 5 1
+      }
+    }
+  }
+}
+USE obstacle0
+DirectionalLight {
+  intensity 0.2
+  direction -1 -1 -1
+  ambientIntensity 0.3
+}
+DEF View1 Viewpoint {
+  description ""
+  position 0 0 30
+}
+DEF ViewRight Viewpoint {
+  position 10 0 30
+}
+DEF ViewMid Viewpoint {
+  position 2 0 30
+}

@@ -34,7 +34,7 @@ float ttcForDenseMat(Mat flow, int foeY, float *ttc);
 *  int py: Required = false. 上下光流的分界线.
 *  float edge: Required = false. 忽略上下左右edge倍的边界. 
 */
-int balanceForDenseMat(Mat flow, Mat framedst, int threshold, float k = 3, int px = WIDTH/2, int py = HEIGHT/2, float edge = EDGE);
+float balanceForDenseMat(Mat flow, Mat framedst, float k, int px = WIDTH/2, int py = HEIGHT/2);
 
 /*
 *  Method:     drawFlowForDenseMat
@@ -45,4 +45,13 @@ int balanceForDenseMat(Mat flow, Mat framedst, int threshold, float k = 3, int p
 */
 void drawFlowForDenseMat(Mat flow, Mat framedst);
 
+/*
+*  Method:     drawMatFlow
+*  Description: p到q的连线，表示p像素的光流，参数类型为cv::mat. 
+*  Returns:    void
+*  CvPoint p:   Required = true. 源点. 
+*  CvPoint q:   Required = true. 目标点， q - p = 光流. 
+*  Mat framedst: Required = true. 在图像帧framedst画光�?
+*/
+void drawMatFlow(CvPoint p, CvPoint q, Mat framedst);
 #endif
