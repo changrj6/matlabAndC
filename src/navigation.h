@@ -64,7 +64,7 @@ float imgStrategic(ImgFunType funtype, IplImage* imgprev, IplImage* imgcurr, Ipl
 *  int strategic: Required = false. 默认�?（左右光流平衡）. 在video.h中imgVideo函数中有详细说明.
 *  bool issf: Required = false. 默认false，调用FB。但如果调用SF方法，issf必须传�?true. 
 */
-int matStrategic(MatFunType funtype, Mat frameprev, Mat framecurr, Mat framedst,Mat &color, int strategic = 1, bool issf = false);
+float matStrategic(MatFunType funtype, Mat frameprev, Mat framecurr, Mat framedst,Mat &color, int strategic = 1, bool issf = false);
 
 #endif /* optflow_NAVIGATION_ */
 

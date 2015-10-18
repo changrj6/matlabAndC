@@ -91,7 +91,7 @@ float imgStrategic(ImgFunType funtype, IplImage* imgprev, IplImage* imgcurr, Ipl
 	return result;
 }
 
-int matStrategic(MatFunType funtype, Mat frameprev, Mat framecurr, Mat &framedst,Mat &color, int strategic,bool issf){
+float matStrategic(MatFunType funtype, Mat frameprev, Mat framecurr, Mat framedst, Mat &color, int strategic, bool issf){
 	Mat frameprev_1, framecurr_1, flow;
 	if (issf)
 	{
@@ -124,6 +124,6 @@ int matStrategic(MatFunType funtype, Mat frameprev, Mat framecurr, Mat &framedst
 	framecurr_1.release();
 	frameprev_1.release();
 	flow.release();
-	return 0;
+	return result;
 }
 

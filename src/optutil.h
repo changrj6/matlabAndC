@@ -22,4 +22,9 @@ float compareTag(int *tagOrigin, int *tagSafe, int cols, int *tags);
 float balanceControlLR(bool isBig, int leftSumFlow, int rightSumFlow, float k);
 
 float turnLRScale(float leftSumFlow, float rightSumFlow, float k);
+
+Mat calibrate(Mat img);
+
+IplImage* calibrate(IplImage* iplimg);
+
 #endif /* util_FOE_TTC_ */

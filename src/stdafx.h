@@ -29,7 +29,7 @@
 #define LK_K 6
 #define HS_K 4.3
 #define BM_K 1.4
-#define FB_K 2
+#define FB_K 7
 #define SF_K 3
 #define INT_FLOAT 100.0 //matlab中int向上float转型有问题，所以结果乘100，处理时再除100.
 #define K_FLAG true  //在避撞偏移量中，false表示k取1，而非上述*_K变量

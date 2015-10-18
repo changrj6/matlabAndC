@@ -1,0 +1,388 @@
+#VRML V2.0 utf8
+
+WorldInfo {
+ title "VR Car with obstacles"
+ info [
+  "Copyright 2009 Alexander Grau",
+  "$Revision: 1.0 $",
+  "$Date: 2009/01/15 14:10:00 $",
+  "$Author: alexandergrau $"
+ ]
+}
+
+NavigationInfo {
+ headlight TRUE
+ type "EXAMINE"
+}
+
+
+DEF View1 Viewpoint {
+  orientation 0 1 0 3.14  
+  position  -2, 5, -15
+  fieldOfView 1
+  description "View 1 - Observer"
+}
+
+DEF Camera_car Transform {
+  translation 1 0.25 1
+  rotation 0 1 0 0
+  children [
+    DEF VPfollow Viewpoint {
+      fieldOfView	7.85398
+      orientation	0 1 0 1.57
+      position	-8 0 0
+      description	"View 2 - Driver"
+    }
+  ]
+}
+
+
+DirectionalLight {
+	color 1 0.8 0.7
+	direction 0.9 -0.3 -0.35
+	intensity 1
+}
+
+Background {
+  skyAngle [
+    1.39626
+    1.51844
+  ]
+  skyColor [
+    0.0 0.0 1.0
+    0.4 0.6 1.0
+    1.0 1.0 1.0
+  ]
+  groundAngle [
+    1.5708
+  ]
+  groundColor [
+    0.0 0.0 0.0
+    0.0 0.50196 0.0
+  ]
+}
+
+DEF floor Transform {  
+  children [
+    Shape { 
+      appearance Appearance { 
+        texture ImageTexture { 
+          url "floor.jpg"
+          repeatS TRUE
+          repeatT TRUE 
+        }
+        textureTransform TextureTransform {
+			     scale 40 40
+			     #rotation 0.95 
+		    }
+        material Material { 
+          diffuseColor 0.3 0.4 0.5 
+        }
+      }
+      geometry Box { size 80 0.01 80 }
+    }
+  ]    
+}
+
+
+DEF Wall1 Group
+{
+  children [    
+    Shape {
+      appearance  Appearance {
+      	material  Material {
+	         diffuseColor 0.4 0.23 0.13
+	      }	      
+        texture ImageTexture { 
+          url "bricks.jpg"
+          repeatS TRUE
+          repeatT TRUE 
+        }
+        textureTransform TextureTransform {
+			     scale 15 5			   
+		    }
+      }
+      geometry Box {
+	       size 20 4 0.1	       
+      }
+    },
+  ]
+}
+
+DEF Box1 Group
+{
+  children [    
+    Shape {
+      appearance  Appearance {
+      	material  Material {
+	         diffuseColor 0.4 0.23 0.13
+	      }	      
+        texture ImageTexture { 
+          url "box.jpg"           
+        }
+      }
+      geometry Box {
+	       size 1 1 1  	       
+      }
+    },
+  ]
+}
+
+DEF Pool Transform
+{
+    translation 5 0.1 6
+    rotation	0 1 0 1.37    
+    children [
+
+	   Shape  {
+	     appearance  Appearance {      
+        texture ImageTexture { 
+          url "water.jpg"
+          repeatS TRUE
+          repeatT TRUE 
+        }
+        textureTransform TextureTransform {
+			     scale 4 4			   
+		    }
+      }
+      geometry Box {
+        size 4 0.001 4          
+      }	
+     },
+     
+     Transform  {	    
+      translation 0 -0.1 0
+	    children DEF Wheel Shape	{
+		      appearance Appearance {
+		        material DEF Wheel_Material Material {
+		          transparency 0
+              diffuseColor  0.8 0.8 1.0
+		        }
+		      }
+		      geometry Box {		        
+		        size 5 0.1 5
+		      }
+	    }
+	   }         
+  ]    
+}
+
+DEF Cone1 Group
+{
+  children [    
+    Shape {
+      appearance  Appearance {
+      	material  Material {
+	         diffuseColor 0.8 0.4 0.13
+	      }	            
+      }
+      geometry Cone {
+	       bottomRadius 0.2
+         height 1       	       
+      }
+    },
+    Transform {
+      translation 0 0 0      
+      children [      
+        Shape {
+          appearance  Appearance {
+          	material  Material {
+	            diffuseColor 0.8 0.4 0.13
+	          }	            
+          }
+	        geometry Box {
+            size 0.25 0.05 0.25
+          }  	       
+        } 
+      ]
+    }
+  ]
+}
+
+
+
+DEF Obstacles Group {
+  children [
+    Transform  {
+      translation 0 0 20
+      children USE Wall1      
+    },
+    Transform  {
+      translation -10 0 10
+      rotation 0 1 0 1.57            
+      children USE Wall1            
+    },
+    Transform  {
+      translation 10 0 10
+      rotation 0 1 0 1.57            
+      children USE Wall1            
+    },
+
+
+    Transform  {
+      translation 0 0 10
+      rotation 0 1 0 1.57            
+      children USE Box1            
+    },
+    Transform  {
+      translation 0 0 12
+      rotation 0 1 0 0.47            
+      children USE Box1            
+    },
+    Transform  {
+      translation 0 0 14
+      rotation 0 1 0 1.97            
+      children USE Box1            
+    },
+    Transform  {
+      translation 0 0 16
+      rotation 0 1 0 1.57            
+      children USE Box1            
+    },
+    Transform  {
+      translation 0 0 18
+      rotation 0 1 0 0.57            
+      children USE Box1            
+    },
+
+
+
+    Transform  {
+      translation -9 0 10
+      rotation 0 1 0 1.17            
+      children USE Box1            
+    },
+    Transform  {
+      translation -7 0 10
+      rotation 0 1 0 1.57            
+      children USE Box1            
+    },
+    Transform  {
+      translation -5 0 10
+      rotation 0 1 0 0.07            
+      children USE Box1            
+    },
+    Transform  {
+      translation -3 0 10
+      rotation 0 1 0 1.97            
+      children USE Box1            
+    },
+    Transform  {
+      translation -1 0 10
+      rotation 0 1 0 1.67            
+      children USE Box1            
+    },
+    Transform  {
+      translation 1 0 10
+      rotation 0 1 0 0.37            
+      children USE Box1            
+    },
+    Transform  {
+      translation 3 0 10
+      rotation 0 1 0 1.57            
+      children USE Box1            
+    },
+    Transform  {
+      translation 5 0 10
+      rotation 0 1 0 1.07            
+      children USE Box1            
+    },
+    Transform  {
+      translation 7 0 10
+      rotation 0 1 0 1.2            
+      children USE Box1            
+    },
+    Transform  {
+      translation 9 0 10
+      rotation 0 1 0 0.57            
+      children USE Box1            
+    },
+    
+
+    Transform  {
+      translation 8 0 3
+      rotation 0 1 0 1.57            
+      children USE Box1            
+    },
+    Transform  {
+      translation 6 0 2
+      rotation 0 1 0 1.57            
+      children USE Box1            
+    },
+    Transform  {
+      translation 9 0 4
+      rotation 0 1 0 1.57            
+      children USE Box1            
+    },
+    
+    
+    Transform  {
+      translation -4 0 2
+      children USE Cone1      
+    },
+    Transform  {
+      translation -5 0 2
+      children USE Cone1      
+    },
+    Transform  {
+      translation -7 0 2
+      children USE Cone1      
+    },    
+    Transform  {
+      translation -9 0 2
+      children USE Cone1      
+    },
+    Transform  {
+      translation -1 0 1
+      children USE Cone1      
+    },    
+        
+        
+        
+    Transform  {
+      translation -6 0 5
+      children USE Cone1      
+    },    
+    Transform  {
+      translation -8 0 3
+      children USE Cone1      
+    },    
+    Transform  {
+      translation 5 0 13
+      children USE Cone1      
+    },    
+    Transform  {
+      translation 5 0 19
+      children USE Cone1      
+    },    
+    Transform  {
+      translation 5 0 19
+      children USE Cone1      
+    },    
+    Transform  {
+      translation 9 0 19
+      children USE Cone1      
+    },    
+    Transform  {
+      translation 2 0 16
+      children USE Cone1      
+    },    
+
+    Transform  {
+      translation -5 0 19
+      children USE Cone1      
+    },    
+    Transform  {
+      translation -9 0 19
+      children USE Cone1      
+    },    
+    Transform  {
+      translation -2 0 16
+      children USE Cone1      
+    },    
+
+                
+  ]
+}    
+
+

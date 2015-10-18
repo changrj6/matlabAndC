@@ -1,0 +1,64 @@
+#VRML V2.0 utf8
+
+WorldInfo {
+  title "VR Car with obstacles"
+  info [
+    "Copyright 2009 Alexander Grau" 
+    "$Revision: 1.0 $" 
+    "$Date: 2009/01/15 14:10:00 $" 
+    "$Author: alexandergrau $" 
+  ]
+}
+NavigationInfo {
+  type "EXAMINE" 
+}
+DirectionalLight {
+  direction 0.9 -0.3 -0.35
+  color 1 0.8 0.7
+}
+Background {
+  skyColor [
+    0 0 1,
+    0.4 0.6 1,
+    1 1 1 
+  ]
+  skyAngle [1.39626, 1.51844]
+  groundColor [
+    0 0 0,
+    0 0.50196 0 
+  ]
+  groundAngle 1.5708
+}
+DEF floor Transform {
+  translation 0 -1 -50
+  children Shape {
+    appearance Appearance {
+      # rotation 0.95 
+      textureTransform NULL
+      material Material {
+        diffuseColor 0 0.8 0
+      }
+    }
+    geometry Box {
+      size 80 0.01 300
+    }
+  }
+}
+DEF view1 Viewpoint {
+  description "View 0"
+  position 0 1 0
+  orientation 0 1 0 3.14
+  fieldOfView 1
+}
+DEF obs Transform {
+  translation 0 0 30
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 1 0
+      }
+    }
+    geometry Box {
+    }
+  }
+}

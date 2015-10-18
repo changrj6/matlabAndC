@@ -81,6 +81,34 @@ float turnLRScale(float leftSumFlow, float rightSumFlow, float k){
     }
 }
 
+Mat calibrate(Mat img)
+{
+	double mtx[3][3]={562.89836209,0,           314.41994795,0		   ,552.27825968,   160.37443571,0           ,0           ,1           };
+	Mat matrix(Size(3,3),CV_64F,mtx);
+	Mat img2;
+	Vec<float,5> dist(-5.25438307e-01,3.76324874e-01,-4.78114662e-04,3.51717002e-04,-1.37709825e-01); 
+	Mat newcameramtx; 
+	newcameramtx = getOptimalNewCameraMatrix(matrix , dist ,Size(img.rows,img.cols), 0,Size(img.rows,img.cols));
+	undistort(img,img2,matrix,dist,newcameramtx);
+    matrix.release();
+    img2.release();
+    newcameramtx.release();
+	return img2;
+}
+
+IplImage* calibrate(IplImage* iplimg)
+{
+	Mat img(iplimg,false);
+	Mat img2 = calibrate(img);
+	IplImage iplimg2 = img2;
+    img.release();
+    img2.release();
+	return &iplimg2;
+}
+
+
+
+
 
 
 

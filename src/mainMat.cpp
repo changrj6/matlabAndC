@@ -15,25 +15,21 @@ void mexFunction(int nlhs,mxArray *plhs[], int nrhs, const mxArray *prhs[])
     char funcname[10];  
     int buflens =mxGetNumberOfElements(prhs[0]);  
     mxGetString(prhs[0], funcname, buflens+1);  
-    
     Mat frame_1 = mxArray2cvMat8U3(prhs[1]);
     Mat frame_2 = mxArray2cvMat8U3(prhs[2]);
     int strategic = mxGetScalar(prhs[3]); 
     Mat frame_dst;
-    cvResize(img_2, img_dst);
     resize(frame_2,frame_dst,Size(WIDTH,HEIGHT),0,0,1);
-    
     Mat color;
     color.create(HEIGHT, WIDTH, CV_8UC3);
     float result;
     if (!strcmp(funcname, "FB"))
-    {
-        result = matStrategic(funtype, frame_1, frame_2, frame_dst, color, strategic, false);
+    {   
+        result = matStrategic(FarneBack, frame_1, frame_2, frame_dst, color, strategic, false);
     }else if (!strcmp(funcname, "SF"))
     {
-        result = matStrategic(funtype, frame_1, frame_2, frame_dst, color, strategic, true);
+        result = matStrategic(SimpleFlow, frame_1, frame_2, frame_dst, color, strategic, true);
     }
-   
     mexPrintf("%f \n", result/INT_FLOAT);
     //cvShowImage("img2",img_dst);
     plhs[0] = cvMat2mxArray8U3(frame_dst);

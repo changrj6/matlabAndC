@@ -36,6 +36,8 @@ float ttcForDenseMat(Mat flow, int foeY, float *ttc);
 */
 float balanceForDenseMat(Mat flow, Mat framedst, float k, int px = WIDTH/2, int py = HEIGHT/2);
 
+bool isBigObstacleMat(Mat framedst, Mat flow);
+
 /*
 *  Method:     drawFlowForDenseMat
 *  Description: 在framedst图像帧上画光�? 
